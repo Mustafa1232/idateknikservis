@@ -1,0 +1,499 @@
+
+<%@  Language="C#" Inherits="idaklima.WebForm1" CodeBehind="WebForm1.aspx.cs" %>
+<!DOCTYPE html>
+<script runat="server" >
+   
+    System.Data.SqlClient.SqlConnection baglanti = new System.Data.SqlClient.SqlConnection("Data Source=DESKTOP-AN31C7Q\\SQLEXPRESS;Initial Catalog=ida;Integrated Security=True");
+    protected void cek_Click(object sender, EventArgs e)
+    {
+        combobox1.Items.Clear();
+        baglanti.Open();
+        System.Data.SqlClient.SqlDataReader oku;
+        System.Data.SqlClient.SqlCommand komut = new System.Data.SqlClient.SqlCommand();
+        komut.Connection = baglanti;
+        komut.CommandText = "select * from Belge";
+        oku = komut.ExecuteReader();
+        while (oku.Read())
+            combobox1.Items.Add(oku[1].ToString());
+        baglanti.Close();
+    }
+    protected void cek1_Click(object sender, EventArgs e)
+    {
+        string gaici, gadisi, supviz, bakim, ariza;
+        baglanti.Open();
+        System.Data.SqlClient.SqlCommand komut = new System.Data.SqlClient.SqlCommand("select * from Belge where Musteriisinadi = @Musteriisinadi", baglanti);
+        komut.Parameters.AddWithValue("@Musteriisinadi", combobox1.Text);
+        System.Data.SqlClient.SqlDataReader read = komut.ExecuteReader();
+        while (read.Read())
+        {
+            belgeNotxt.Text = read[0].ToString();
+            musteriad.Text = read[1].ToString();
+            adrestxt.Text = read[2].ToString();
+            teltxt.Text = read[3].ToString();
+            mailtxt.Text = read[4].ToString();
+            vdairesitxt.Text = read[5].ToString();
+            vnotxt.Text = read[6].ToString();
+            gbelgenotxt.Text = read[7].ToString();
+            cihaztipitxt.Text = read[8].ToString();
+            serinotxt.Text = read[9].ToString();
+            escalcihtxt.Text = read[10].ToString();
+            calpertxt.Text = read[11].ToString();
+            tarihtxt.Text = read[12].ToString();
+            baslamatxt.Text = read[13].ToString();
+            bitistxt.Text = read[14].ToString();
+            iscitxt.Text = read[15].ToString();
+            miktaritxt.Text = read[16].ToString();
+            birimtxt.Text = read[17].ToString();
+            birimfiyatitxt.Text = read[18].ToString();
+            tutartxt.Text = read[19].ToString();
+            madsoyadtxt.Text = read[20].ToString();
+            mfirmatxt.Text = read[21].ToString();
+            mtarihtxt.Text = read[22].ToString();
+            sadsoyadtxt.Text = read[23].ToString();
+            sfirmatxt.Text = read[24].ToString();
+            starihtxt.Text = read[25].ToString();
+            gaici = read[26].ToString();
+            gadisi = read[27].ToString();
+            supviz = read[28].ToString();
+            bakim = read[29].ToString();
+            ariza = read[30].ToString();
+
+            if (gaici == "1")
+                gicichk.Checked = true;
+            else
+                gicichk.Checked = false;
+            if (gadisi == "1")
+                gdisichk.Checked = true;
+            else
+                gdisichk.Checked = false;
+            if (supviz == "1")
+                supchk.Checked = true;
+            else
+                supchk.Checked = false;
+            if (bakim == "1")
+                bakimchk.Checked = true;
+            else
+                bakimchk.Checked = false;
+            if (ariza == "1")
+                arizachk.Checked = true;
+            else
+                arizachk.Checked = false;
+        }
+    }
+    protected void cek2_Click(object sender, EventArgs e)
+    {
+
+        string gaici, gadisi, supviz, bakim, ariza;
+
+        if (baglanti.State == System.Data.ConnectionState.Closed)
+        {
+            baglanti.Open();
+            if (gicichk.Checked == true)
+                gaici = "1";
+            else
+                gaici = "0";
+            if (gdisichk.Checked == true)
+                gadisi = "1";
+            else
+                gadisi = "0";
+
+            if (supchk.Checked == true)
+                supviz = "1";
+            else
+                supviz = "0";
+            if (bakimchk.Checked == true)
+                bakim = "1";
+            else
+                bakim = "0";
+            if (arizachk.Checked == true)
+                ariza = "1";
+            else
+                ariza = "0";
+            string kayit = "insert into belge (BelgeNo,Musteriisinadi,adres,telefon,email,vergidairesi,vergino,garantibelgeno,cihaztipi,serino,escalcih,calper,tarih,bassaat,bitsaat,iscilik,Miktari,birim,birimfiyat,tutar,MAdSoyad,MFirmagorevi,MTarih,SAdsoyad,SFirmagorevi,STarih,garantiici,garantidisi,supervizyon,bakim,ariza)values(@BelgeNo,@Musteriisinadi,@adres,@telefon,@email,@vergidairesi,@vergino,@garantibelgeno,@cihaztipi,@serino,@escalcih,@calper,@tarih,@bassaat,@bitsaat,@iscilik,@Miktari,@birim,@birimfiyat,@tutar,@MAdSoyad,@MFirmagorevi,@MTarih,@SAdsoyad,@SFirmagorevi,@STarih,@garantiici,@garantidisi,@supervizyon,@bakim,@ariza)";
+            System.Data.SqlClient.SqlCommand komut = new System.Data.SqlClient.SqlCommand(kayit, baglanti);
+            komut.Parameters.AddWithValue("@BelgeNo", belgeNotxt.Text);
+            komut.Parameters.AddWithValue("@Musteriisinadi", musteriad.Text);
+            komut.Parameters.AddWithValue("@adres", adrestxt.Text);
+            komut.Parameters.AddWithValue("@telefon", teltxt.Text);
+            komut.Parameters.AddWithValue("@email", mailtxt.Text);
+            komut.Parameters.AddWithValue("@vergidairesi", vdairesitxt.Text);
+            komut.Parameters.AddWithValue("@vergino", vnotxt.Text);
+            komut.Parameters.AddWithValue("@garantibelgeno", gbelgenotxt.Text);
+            komut.Parameters.AddWithValue("@cihaztipi", cihaztipitxt.Text);
+            komut.Parameters.AddWithValue("@serino", serinotxt.Text);
+            komut.Parameters.AddWithValue("@escalcih", escalcihtxt.Text);
+            komut.Parameters.AddWithValue("@calper", calpertxt.Text);
+            komut.Parameters.AddWithValue("@tarih", tarihtxt.Text);
+            komut.Parameters.AddWithValue("@bassaat", baslamatxt.Text);
+            komut.Parameters.AddWithValue("@bitsaat", bitistxt.Text);
+            komut.Parameters.AddWithValue("@iscilik", iscitxt.Text);
+            komut.Parameters.AddWithValue("@Miktari", miktaritxt.Text);
+            komut.Parameters.AddWithValue("@birim", birimtxt.Text);
+            komut.Parameters.AddWithValue("@birimfiyat", birimfiyatitxt.Text);
+            komut.Parameters.AddWithValue("@tutar", tutartxt.Text);
+            komut.Parameters.AddWithValue("@MAdSoyad", madsoyadtxt.Text);
+            komut.Parameters.AddWithValue("@MFirmagorevi", mfirmatxt.Text);
+            komut.Parameters.AddWithValue("@MTarih", mtarihtxt.Text);
+            komut.Parameters.AddWithValue("@SAdsoyad", sadsoyadtxt.Text);
+            komut.Parameters.AddWithValue("@SFirmagorevi", sfirmatxt.Text);
+            komut.Parameters.AddWithValue("@STarih", starihtxt.Text);
+            komut.Parameters.AddWithValue("@garantiici", gaici);
+            komut.Parameters.AddWithValue("@garantidisi", gadisi);
+            komut.Parameters.AddWithValue("@supervizyon", supviz);
+            komut.Parameters.AddWithValue("@bakim", bakim);
+            komut.Parameters.AddWithValue("@ariza", ariza);
+
+
+            komut.ExecuteNonQuery();
+            baglanti.Close();
+        }
+    }
+
+
+
+
+
+
+    protected void musteriad_TextChanged(object sender, EventArgs e)
+    {
+        string gaici, gadisi, supviz, bakim, ariza;
+        //26dan 30 a kadar int deger
+        try
+        {
+            baglanti.Open();
+            System.Data.SqlClient.SqlCommand komut = new System.Data.SqlClient.SqlCommand("SELECT * FROM Belge WHERE Musteriisinadi = @Musteriisinadi", baglanti);
+            komut.Parameters.AddWithValue("@Musteriisinadi", musteriad.Text);
+            System.Data.SqlClient.SqlDataReader read = komut.ExecuteReader();
+
+            while (read.Read())
+            {
+
+                belgeNotxt.Text = read[0].ToString();
+                musteriad.Text = read[1].ToString();
+                adrestxt.Text = read[2].ToString();
+                teltxt.Text = read[3].ToString();
+                mailtxt.Text = read[4].ToString();
+                vdairesitxt.Text = read[5].ToString();
+                vnotxt.Text = read[6].ToString();
+                gbelgenotxt.Text = read[7].ToString();
+                cihaztipitxt.Text = read[8].ToString();
+                serinotxt.Text = read[9].ToString();
+                escalcihtxt.Text = read[10].ToString();
+                calpertxt.Text = read[11].ToString();
+                tarihtxt.Text = read[12].ToString();
+                baslamatxt.Text = read[13].ToString();
+                bitistxt.Text = read[14].ToString();
+                iscitxt.Text = read[15].ToString();
+                miktaritxt.Text = read[16].ToString();
+                birimtxt.Text = read[17].ToString();
+                birimfiyatitxt.Text = read[18].ToString();
+                tutartxt.Text = read[19].ToString();
+                madsoyadtxt.Text = read[20].ToString();
+                mfirmatxt.Text = read[21].ToString();
+                mtarihtxt.Text = read[22].ToString();
+                sadsoyadtxt.Text = read[23].ToString();
+                sfirmatxt.Text = read[24].ToString();
+                starihtxt.Text = read[25].ToString();
+                gaici = read[26].ToString();
+                gadisi = read[27].ToString();
+                supviz = read[28].ToString();
+                bakim = read[29].ToString();
+                ariza = read[30].ToString();
+
+                if (gaici == "1")
+                    gicichk.Checked = true;
+                else
+                    gicichk.Checked = false;
+                if (gadisi == "1")
+                    gdisichk.Checked = true;
+                else
+                    gdisichk.Checked = false;
+                if (supviz == "1")
+                    supchk.Checked = true;
+                else
+                    supchk.Checked = false;
+                if (bakim == "1")
+                    bakimchk.Checked = true;
+                else
+                    bakimchk.Checked = false;
+                if (ariza == "1")
+                    arizachk.Checked = true;
+                else
+                    arizachk.Checked = false;
+            }
+
+            baglanti.Close();
+        }
+        catch (Exception ae)
+        {
+            throw ae;
+        }
+    }
+  
+
+   /*protected void cek3_Click(object sender, EventArgs e)
+    {
+        
+               System.Windows.Forms.SaveFileDialog file = new System.Windows.Forms.SaveFileDialog();
+        file.Filter = "PDF DOSYALARI(*.pdf)|*.pdf";
+        file.Title = "PDF DOSYASI OLUŞTURMA";
+        if (file.ShowDialog() == DialogResult.OK)
+        {
+            FileStream dosya = File.Open(file.FileName,FileMode.Create);
+            Document pdf = new Document();
+            PdfWriter.GetInstance(pdf,dosya);
+            pdf.AddAuthor("idaklima");
+            pdf.AddCreator("idaklima");
+            pdf.AddTitle("PDF DOSYASI İŞLEMLERİ");
+            pdf.AddSubject("Konu");
+            pdf.AddKeywords("Teknik Servis Belgesi");
+            pdf.AddCreationDate();
+          //  Paragraph paragraph = new Paragraph();
+    }*/
+</script>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teknik Servis Belgesi</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f2f2f2;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <form id="form1" runat="server">
+            <h1>Teknik Servis Belgesi</h1>
+            <table>
+                <tr>
+                    <td>Belge No</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="belgeNotxt" /></td>
+                    <td>
+                        <asp:DropDownList runat="server" ID="combobox1"></asp:DropDownList>
+                    </td>
+                    <td>
+                        <asp:Button runat="server" Text="yenile" ID="cek" OnClick="cek_Click"></asp:Button></td>
+                    <td>
+                        <asp:Button runat="server" Text="cek" ID="Button2" OnClick="cek1_Click"></asp:Button></td>
+                    <td>
+                        <asp:Button runat="server" Text="yukle" ID="Button3" OnClick="cek2_Click"></asp:Button></td>
+                     <td>
+     <asp:Button runat="server" Text="pdf" ID="Button4" OnClick="cek3_Click"></asp:Button></td>
+                </tr>
+
+
+            </table>
+            <table>
+
+                <tr>
+                    <th colspan="2">Servis Bilgileri</th>
+                </tr>
+                <tr>
+                    <td>Garanti İçi</td>
+                    <td>
+                        <asp:CheckBox runat="server" ID="gicichk" /></td>
+                </tr>
+                <tr>
+                    <td>Garanti Dışı</td>
+                    <td>
+                        <asp:CheckBox runat="server" ID="gdisichk" /></td>
+                </tr>
+                <tr>
+                    <td>Süpervizyon</td>
+                    <td>
+                        <asp:CheckBox runat="server" ID="supchk" /></td>
+                </tr>
+                <tr>
+                    <td>Bakim</td>
+                    <td>
+                        <asp:CheckBox runat="server" ID="bakimchk" /></td>
+                </tr>
+                <tr>
+                    <td>Ariza</td>
+                    <td>
+                        <asp:CheckBox runat="server" ID="arizachk" /></td>
+                </tr>
+                <!-- Diğer servis bilgileri buraya eklenebilir -->
+            </table>
+            <table>
+                <tr>
+                    <th colspan="2">Müşteri Bilgileri</th>
+                </tr>
+                <tr>
+                    <td>Müşteri/İşin Adı</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="musteriad" OnTextChanged="musteriad_TextChanged"></asp:TextBox>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Adres</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="adrestxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Telefon</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="teltxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>E-mail</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="mailtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Vergi Dairesi</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="vdairesitxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Vergi Numarası</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="vnotxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Müşteri/Firma Yetkilisi Adı Soyadı</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="madsoyadtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Müşteri/Firma Yetkilisi Firma Görevi</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="mfirmatxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Müşteri/Firma Yetkilisi Tarih</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="mtarihtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Servis Yetkilisi Ad Soyad</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="sadsoyadtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Servis Yetkilisi Firma Görevi</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="sfirmatxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Servis Yetkilisi Tarih</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="starihtxt"></asp:TextBox></td>
+                </tr>
+            </table>
+            <table>
+                <tr>
+                    <th colspan="2">Servis Detayları</th>
+                </tr>
+                <tr>
+                    <td>Garanti Belge No</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="gbelgenotxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Cihaz Tipi</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="cihaztipitxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Seri No</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="serinotxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Eş Çalışan Cihaz</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="escalcihtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Çalışan Personel</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="calpertxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Tarih</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="tarihtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Başlama Saati</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="baslamatxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Bitiş Saati</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="bitistxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Malzeme/İşçilik Yol</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="iscitxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Miktarı</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="miktaritxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Birim</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="birimtxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Birim Fiyatı</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="birimfiyatitxt"></asp:TextBox></td>
+                </tr>
+                <tr>
+                    <td>Tutar</td>
+                    <td>
+                        <asp:TextBox runat="server" ID="tutartxt"></asp:TextBox></td>
+
+
+                </tr>
+
+
+            </table>
+        </form>
+    </div>
+</body>
+</html>
+
